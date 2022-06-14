@@ -45,6 +45,8 @@ interface Contributors : CoroutineScope {
         loadInitialParams()
     }
 
+    @ExperimentalCoroutinesApi
+    @DelicateCoroutinesApi
     fun loadContributors() {
         val (username, password, org, _) = getParams()
         val req = RequestData(username, password, org)
@@ -79,11 +81,9 @@ interface Contributors : CoroutineScope {
                 }.setUpCancellation()
             }
             CONCURRENT -> { // Performing requests concurrently
-                launch(Dispatchers.Default) {
+                launch {
                     val users = loadContributorsConcurrent(service, req)
-                    withContext(Dispatchers.Main) {
-                        updateResults(users, startTime)
-                    }
+                    updateResults(users, startTime)
                 }.setUpCancellation()
             }
             NOT_CANCELLABLE -> { // Performing requests in a non-cancellable way
@@ -93,29 +93,23 @@ interface Contributors : CoroutineScope {
                 }.setUpCancellation()
             }
             PROGRESS -> { // Showing progress
-                launch(Dispatchers.Default) {
+                launch {
                     loadContributorsProgress(service, req) { users, completed ->
-                        withContext(Dispatchers.Main) {
-                            updateResults(users, startTime, completed)
-                        }
+                        updateResults(users, startTime, completed)
                     }
                 }.setUpCancellation()
             }
             CHANNELS -> {  // Performing requests concurrently and showing progress
-                launch(Dispatchers.Default) {
+                launch {
                     loadContributorsChannels(service, req) { users, completed ->
-                        withContext(Dispatchers.Main) {
-                            updateResults(users, startTime, completed)
-                        }
+                        updateResults(users, startTime, completed)
                     }
                 }.setUpCancellation()
             }
             FLOWS -> {  // Performing requests concurrently and showing progress
-                launch(Dispatchers.Default) {
+                launch {
                     loadContributorsFlows(service, req) { users, completed ->
-                        withContext(Dispatchers.Main) {
-                            updateResults(users, startTime, completed)
-                        }
+                        updateResults(users, startTime, completed)
                     }
                 }.setUpCancellation()
             }
@@ -126,7 +120,7 @@ interface Contributors : CoroutineScope {
 
     private fun clearResults() {
         updateContributors(listOf())
-        updateLoadingStatus(IN_PROGRESS)
+        updateLoadingStatus(LoadingStatus.IN_PROGRESS)
         setActionsStatus(newLoadingEnabled = false)
     }
 

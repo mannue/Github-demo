@@ -1,7 +1,10 @@
 package tasks
 
-import contributors.*
-import kotlinx.coroutines.*
+import contributors.GitHubService
+import contributors.RequestData
+import contributors.User
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
 
 @ExperimentalCoroutinesApi
 suspend fun loadContributorsFlows(
