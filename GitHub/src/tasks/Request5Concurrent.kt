@@ -7,9 +7,8 @@ import kotlinx.coroutines.*
  * Copy the content from `loadContributorsSuspend` to the `coroutineScope` call,
  * so that we can call `async` functions there:
  */
-suspend fun loadContributorsConcurrent(
-    service: GitHubService, req: RequestData
-): List<User> = coroutineScope {
+suspend fun loadContributorsConcurrent(service: GitHubService,
+                                       req: RequestData): List<User> = coroutineScope {
     // Base the solution on the following scheme:
 
     /*

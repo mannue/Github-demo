@@ -5,7 +5,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun loadContributorsCallbacks(service: GitHubService, req: RequestData, updateResults: (List<User>) -> Unit) {
+fun loadContributorsCallbacks(service: GitHubService,
+                              req: RequestData,
+                              updateResults: (List<User>) -> Unit) {
     service.getOrgReposCall(req.org).onResponse { responseRepos ->
         logRepos(req, responseRepos)
         val repos = responseRepos.bodyList()

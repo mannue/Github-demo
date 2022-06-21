@@ -9,7 +9,8 @@ import kotlinx.coroutines.*
  * Our `async` calls now fail to resolve, so we need to start them via `GlobalScope.async`:
  */
 @DelicateCoroutinesApi
-suspend fun loadContributorsNotCancellable(service: GitHubService, req: RequestData): List<User> {
+suspend fun loadContributorsNotCancellable(service: GitHubService,
+                                           req: RequestData): List<User> {
 
     /*
     // ...

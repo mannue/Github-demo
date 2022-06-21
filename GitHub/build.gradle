@@ -21,7 +21,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version"
 
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 
     def retrofit_version = '2.9.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
