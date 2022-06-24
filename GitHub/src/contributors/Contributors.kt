@@ -7,6 +7,7 @@ import tasks.*
 import java.awt.event.ActionListener
 import javax.swing.SwingUtilities
 import kotlin.coroutines.CoroutineContext
+import kotlin.system.exitProcess
 
 enum class Variant {
     BLOCKING,         // Request1Blocking
@@ -20,6 +21,8 @@ enum class Variant {
     FLOWS             // Request8Flows
 }
 
+@DelicateCoroutinesApi
+@ExperimentalCoroutinesApi
 interface Contributors : CoroutineScope {
 
     val job: Job
@@ -38,7 +41,7 @@ interface Contributors : CoroutineScope {
         addOnWindowClosingListener {
             job.cancel()
             saveParams()
-            System.exit(0)
+            exitProcess(0)
         }
 
         // Load stored params (user & password values)
@@ -95,21 +98,27 @@ interface Contributors : CoroutineScope {
             PROGRESS -> { // Showing progress
                 launch {
                     loadContributorsProgress(service, req) { users, completed ->
-                        updateResults(users, startTime, completed)
+                        withContext(Dispatchers.Main) {
+                            updateResults(users, startTime, completed)
+                        }
                     }
                 }.setUpCancellation()
             }
             CHANNELS -> {  // Performing requests concurrently and showing progress
                 launch {
                     loadContributorsChannels(service, req) { users, completed ->
-                        updateResults(users, startTime, completed)
+                        withContext(Dispatchers.Main) {
+                            updateResults(users, startTime, completed)
+                        }
                     }
                 }.setUpCancellation()
             }
             FLOWS -> {  // Performing requests concurrently and showing progress
                 launch {
                     loadContributorsFlows(service, req) { users, completed ->
-                        updateResults(users, startTime, completed)
+                        withContext(Dispatchers.Main) {
+                            updateResults(users, startTime, completed)
+                        }
                     }
                 }.setUpCancellation()
             }
@@ -120,7 +129,7 @@ interface Contributors : CoroutineScope {
 
     private fun clearResults() {
         updateContributors(listOf())
-        updateLoadingStatus(LoadingStatus.IN_PROGRESS)
+        updateLoadingStatus(IN_PROGRESS)
         setActionsStatus(newLoadingEnabled = false)
     }
 
