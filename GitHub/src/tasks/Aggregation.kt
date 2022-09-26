@@ -18,4 +18,10 @@ TODO: Write aggregation code.
 /**
  * Hint: Use either `groupBy()` or `groupingBy()` and `sortedByDescending()` functions.
  */
+// [User("john", 2), User("john", 3), User("Peter", 2) ]
+// -> [
+//      ("john", [User("john", 3), User("john", 2)]),
+//      ("Peter", [User("Peter", 2)])
+//    ]
+// -> [User("john", 5), User("Peter", 2)]
 fun List<User>.aggregate(): List<User> = TODO()
